@@ -1,23 +1,29 @@
-const leftMenu = document.querySelector('.left-menu'),
+const
+   IMG_URL = 'https://image.tmdb.org/t/p/w185_and_h278_bestv2',
+   API_KEY = '89c9c2203fc448088d79aed52c7dc5a6',
+   SERVER = 'https://api.themoviedb.org/3',
+   leftMenu = document.querySelector('.left-menu'),
    hamburger = document.querySelector('.hamburger'),
    dropdown = document.querySelectorAll('.dropdown'),
-   tvCardImg = document.querySelectorAll('.tv-card__img'),
-   tvShowsList = document.querySelector('.tv-shows__list'),
    modal = document.querySelector('.modal'),
    tvShows = document.querySelector('.tv-shows'),
-   IMG_URL = 'https://image.tmdb.org/t/p/w185_and_h278_bestv2',
-   API_KEY = '89c9c2203fc448088d79aed52c7dc5a6';
+   tvCardImg = document.querySelector('.tv-card__img'),
+   tvShowsList = document.querySelector('.tv-shows__list'),
+   modalTitle = document.querySelector('.modal__title'),
+   genresList = document.querySelector('.genres-list'),
+   rating = document.querySelector('.rating'),
+   description = document.querySelector('.description'),
+   modalLink = document.querySelector('.modal__link'),
+   searchForm = document.querySelector('.search__form'),
+   searchFormInput = document.querySelector('.search__form-input');
 
 // preloader
 const loading = document.createElement('div');
 loading.className = 'loading';
 
-console.log(loading);
-
-const DBService = class {
+class DBService {
    getData = async (url) => {
       const res = await fetch(url);
-      console.log(res);
       if (res.ok) {
          return res.json();
       } else {
@@ -26,40 +32,45 @@ const DBService = class {
    }
 
    getTestData = () => {
-      return this.getData('test.json')
+      return this.getData('test.json');
    }
+
+   getTestCard = () => {
+      return this.getData('card.json');
+   }
+
+   getSearchResult = query => this
+      .getData(`${SERVER}/search/tv?api_key=${API_KEY}&query=${query}&language=ru-RU`);
+
+
+   getTvShow = id => this
+      .getData(`${SERVER}/tv/${id}?api_key=${API_KEY}&language=ru-RU`);
+
 }
 
-const renderCard = response => {
-   console.log(response);
+const renderCard = data => {
    tvShowsList.textContent = '';
 
-   response.results.forEach(item => {
+   data.results.forEach(item => {
 
       const {
          backdrop_path: backdrop,
          name: title,
          poster_path: poster,
-         vote_average: vote
+         vote_average: vote,
+         id
       } = item;
-// проверка на наличие эдементов
+      // проверка на наличие эдементов
       const posterIMG = poster ? IMG_URL + poster : '/img/no-poster.jpg',
-         backdropIMG = backdrop ? IMG_URL + backdrop : '';
+         backdropIMG = backdrop ? IMG_URL + backdrop : '',
          voteElem = vote ? `<span class="tv-card__vote">${vote}</span>` : '';
 
-/*          if (vote !== 0) {
-            voteElem = vote
-         } else {
-            voteElem = '';
-         }
-    */
-
-
-      console.log('item: ', item);
       const card = document.createElement('li');
+      card.idTV = id;
+
       card.classList.add('tv-shows__item');
       card.innerHTML = `
-      <a href="#" class="tv-card">
+      <a href="#" id="${id}" class="tv-card">
       ${voteElem}
          <img class="tv-card__img"
             src="${posterIMG}"
@@ -71,15 +82,20 @@ const renderCard = response => {
       loading.remove()
       tvShowsList.append(card); // метод вставляет элемент в html аналог inseartAjasmentElement
    })
+}
 
-}
-{
-   tvShows.append(loading);
-new DBService().getTestData().then(renderCard);
-}
+searchForm.addEventListener('submit', event => {
+   event.preventDefault();
+   const value = searchFormInput.value.trim(); //.trim() уберет пробелы
+   if (value) {
+      tvShows.append(loading);
+      new DBService().getSearchResult(value).then(renderCard);
+   }
+   searchFormInput.value = '';
+});
+
+
 // menu
-
-
 // открытие/закрытие меню
 
 hamburger.addEventListener('click', () => {
@@ -101,6 +117,7 @@ document.addEventListener('click', e => {
 });
 // расскрываем список менюшки
 leftMenu.addEventListener('click', e => {
+   e.preventDefault();
    const target = e.target;
    const dropdown = target.closest('.dropdown');
    if (dropdown) {
@@ -148,19 +165,55 @@ tvShowsList.addEventListener('mouseout', changeImage);
 // MODAL
 // открытие модального окна
 tvShowsList.addEventListener('click', e => {
-   e.preventDefault(); // чтобы страница при клике на ссылку не перезагружалась и не шло вверх
+   e.preventDefault(); // чтобы страница при клике на ссылку не перезагружалась
    const target = e.target,
+
       card = target.closest('.tv-card');
+
    if (card) {
-      document.body.style.overflow = 'hidden'
-      modal.classList.remove('hide')
+      tvShows.append(loading);
+      // делаем запрос
+      new DBService().getTvShow(card.id)
+         .then(({
+            poster_path: posterPath,
+            name: title,
+            genres,
+            vote_average: voteAverage,
+            overview,
+            homepage
+         }) => {
+            tvCardImg.src = IMG_URL + posterPath;
+            tvCardImg.alt = title;
+            modalTitle.textContent = title;
+            genresList.textContent = ''
+            // genresList.innerHTML = genres.reduce((acc, item) => `${acc}<li>${item.name}</li>`, '');
+            /* genres.forEach(item => {
+               genresList.innerHTML += `<li>${item.name}</li>`;
+                }) */
+            for (const item of genres) {
+               // '+=' добавляет к тому что есть еще поля, а не просто заменяет как '='
+               genresList.innerHTML += `<li>${item.name}</li>`;
+            }
+            description.textContent = overview;
+            rating.textContent = voteAverage;
+            modalLink.href = homepage;
+         })
+         .then(() => {
+            document.body.style.overflow = 'hidden'
+            modal.classList.remove('hide')
+            loading.remove()
+
+         })
+
    }
 })
 
-// закрытие 
+// закрытие модального
 modal.addEventListener('click', e => {
    if (e.target.classList.contains('modal') || e.target.closest('.cross')) {
+
       document.body.style.overflow = '';
       modal.classList.add('hide');
+
    }
 })
