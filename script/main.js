@@ -51,26 +51,26 @@ class DBService {
 
 const renderCard = data => {
    tvShowsList.textContent = '';
+   tvShowsHead = document.querySelector('.tv-shows__head')
+   if (data.total_results) {
+      data.results.forEach(item => {
 
-   data.results.forEach(item => {
+         const {
+            backdrop_path: backdrop,
+            name: title,
+            poster_path: poster,
+            vote_average: vote,
+            id
+         } = item;
+         // проверка на наличие эдементов
+         const posterIMG = poster ? IMG_URL + poster : '/img/no-poster.jpg',
+            backdropIMG = backdrop ? IMG_URL + backdrop : '',
+            voteElem = vote ? `<span class="tv-card__vote">${vote}</span>` : '';
 
-      const {
-         backdrop_path: backdrop,
-         name: title,
-         poster_path: poster,
-         vote_average: vote,
-         id
-      } = item;
-      // проверка на наличие эдементов
-      const posterIMG = poster ? IMG_URL + poster : '/img/no-poster.jpg',
-         backdropIMG = backdrop ? IMG_URL + backdrop : '',
-         voteElem = vote ? `<span class="tv-card__vote">${vote}</span>` : '';
+         const card = document.createElement('li');
 
-      const card = document.createElement('li');
-      card.idTV = id;
-
-      card.classList.add('tv-shows__item');
-      card.innerHTML = `
+         card.classList.add('tv-shows__item');
+         card.innerHTML = `
       <a href="#" id="${id}" class="tv-card">
       ${voteElem}
          <img class="tv-card__img"
@@ -80,9 +80,17 @@ const renderCard = data => {
       <h4 class="tv-card__head">${title}</h4>
       </a>   
       `;
-      loading.remove()
-      tvShowsList.append(card); // метод вставляет элемент в html аналог inseartAjasmentElement
-   })
+         loading.remove()
+         tvShowsList.append(card); // метод вставляет элемент в html аналог inseartAjasmentElement
+         searchFormInput.value = '';
+         tvShowsHead.textContent = 'Результат поиска';
+      })
+   } else {
+      searchFormInput.value;
+      loading.remove();
+      tvShowsHead.innerHTML = `<p>Поиск фразы <b>${searchFormInput.value}</b> ничего не дал</p>`;
+      searchFormInput.value = '';
+   }
 }
 
 searchForm.addEventListener('submit', event => {
@@ -92,9 +100,7 @@ searchForm.addEventListener('submit', event => {
       tvShows.append(loading);
       new DBService().getSearchResult(value).then(renderCard);
    }
-   searchFormInput.value = '';
 });
-
 
 // menu
 // открытие/закрытие меню
@@ -205,6 +211,7 @@ tvShowsList.addEventListener('click', e => {
             loading.remove()
 
          })
+
 
    }
 })
