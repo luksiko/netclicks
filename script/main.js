@@ -8,6 +8,7 @@ const
    modal = document.querySelector('.modal'),
    tvShows = document.querySelector('.tv-shows'),
    tvCardImg = document.querySelector('.tv-card__img'),
+   tvImgContent = document.querySelector('.image__content'),
    tvShowsList = document.querySelector('.tv-shows__list'),
    modalTitle = document.querySelector('.modal__title'),
    genresList = document.querySelector('.genres-list'),
@@ -182,7 +183,7 @@ tvShowsList.addEventListener('click', e => {
             overview,
             homepage
          }) => {
-            tvCardImg.src = IMG_URL + posterPath;
+            tvCardImg.src = posterPath ? IMG_URL + posterPath : tvImgContent.classList.add('hide');
             tvCardImg.alt = title;
             modalTitle.textContent = title;
             genresList.textContent = ''
@@ -211,7 +212,7 @@ tvShowsList.addEventListener('click', e => {
 // закрытие модального
 modal.addEventListener('click', e => {
    if (e.target.classList.contains('modal') || e.target.closest('.cross')) {
-
+      tvImgContent.classList.remove('hide');
       document.body.style.overflow = '';
       modal.classList.add('hide');
 
