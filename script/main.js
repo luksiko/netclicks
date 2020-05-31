@@ -107,7 +107,6 @@ const renderCard = (response, target) => {
    })
 
    if (response.total_pages != 0 && response.total_pages <= 10) {
-      console.dir(pagination);
       pagination.textContent = '';
       for (let i = 1; i <= response.total_pages; i++) {
          pagination.innerHTML += `<li><a href="#" class="pages">${i}</a></li>`;
@@ -174,10 +173,13 @@ leftMenu.addEventListener('click', e => {
    leftMenuTarget('#today', 'airing_today');
    leftMenuTarget('#week', 'on_the_air');
 
-   if (target.closest('#search')) {
+   if (target.closest('#search')) { // клик на ПОИСК в меню
       tvShowsList.textContent = '';
       tvShowsHead.textContent = '';
       pagination.textContent = '';
+      document.querySelector('.search__form-input').focus(); // фокус на меню поиска
+      leftMenu.classList.remove('openMenu');
+      hamburger.classList.remove('open');
    }
 
 });
