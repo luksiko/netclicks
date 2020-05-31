@@ -8,21 +8,21 @@
 @font-face {
     font-family: "Museo Sans";
     src: url("../fonts/MuseoSansCyrl-500.woff2") format("woff2"),
-    url("../fonts/MuseoSansCyrl-500.woff") format("woff");
+        url("../fonts/MuseoSansCyrl-500.woff") format("woff");
     font-weight: 500;
 }
 
 @font-face {
     font-family: "Museo Sans";
     src: url("../fonts/MuseoSansCyrl-700.woff2") format("woff2"),
-    url("../fonts/MuseoSansCyrl-700.woff") format("woff");
+        url("../fonts/MuseoSansCyrl-700.woff") format("woff");
     font-weight: 700;
 }
 
 @font-face {
     font-family: "Museo Sans";
     src: url("../fonts/MuseoSansCyrl-900.woff2") format("woff2"),
-    url("../fonts/MuseoSansCyrl-900.woff") format("woff");
+        url("../fonts/MuseoSansCyrl-900.woff") format("woff");
     font-weight: 900;
 }
 
@@ -341,7 +341,7 @@ p {
     position: relative;
 }
 
-.active + .dropdown-list {
+.active+.dropdown-list {
     width: 100%;
     height: auto;
     line-height: 30px;
@@ -351,11 +351,11 @@ p {
 
 }
 
-.hide + .dropdown-list {
+.hide+.dropdown-list {
     height: 0;
 }
 
-.active + .dropdown-list:hover {
+.active+.dropdown-list:hover {
     background: #00bcd6;
 }
 
@@ -387,7 +387,7 @@ p {
 
 }
 
-.left-menu:not(.openMenu) li > .dropdown-list {
+.left-menu:not(.openMenu) li>.dropdown-list {
     pointer-events: none;
     height: 0;
 }
@@ -543,17 +543,17 @@ main {
 .modal__content {
     border: 32px solid rgb(255, 193, 7);
     position: relative;
-	min-width: 600px;
+    min-width: 600px;
     max-width: 800px;
     min-height: 400px;
-	max-height: 550px;
+    max-height: 550px;
     padding: 35px 50px 35px 150px;
     background-color: #fff;
     font-size: 14px;
     line-height: 1.2;
     font-weight: 400;
     color: #030303;
-	margin: 0 200px;
+    margin: 0 200px;
 }
 
 .modal__content h2 {
@@ -567,8 +567,8 @@ main {
 }
 
 .modal__description {
-	overflow-y: auto;
-	max-height: 400px;
+    overflow-y: auto;
+    max-height: 400px;
 }
 
 .modal__description section {
@@ -687,10 +687,10 @@ main {
         padding: 0 60px;
     }
 
-	.cross {
-		top: 0;
-		right: 0;
-	}
+    .cross {
+        top: 0;
+        right: 0;
+    }
 }
 
 @media (max-width: 794px) {
@@ -708,26 +708,26 @@ main {
         justify-content: space-around;
     }
 
-	.image__content {
-		position: static;
-		margin: 0 auto;
-	}
+    .image__content {
+        position: static;
+        margin: 0 auto;
+    }
 
-	.modal__content {
-		overflow-y: auto;
-		max-height: 400px;
-		padding: 30px;
-		border-width: 16px;
-	}
+    .modal__content {
+        overflow-y: auto;
+        max-height: 400px;
+        padding: 30px;
+        border-width: 16px;
+    }
 
-	.modal__description {
-		overflow-y: visible;
-		max-height: none;
-	}
+    .modal__description {
+        overflow-y: visible;
+        max-height: none;
+    }
 
-	.modal__content h2 {
-		margin-top: 15px;
-	}
+    .modal__content h2 {
+        margin-top: 15px;
+    }
 }
 
 @media (max-width: 655px) {
@@ -740,10 +740,10 @@ main {
         margin: 0 auto;
     }
 
-	.modal__content {
-		min-width: 320px;
-		width: 100%;
-	}
+    .modal__content {
+        min-width: 320px;
+        width: 100%;
+    }
 
 
 }
@@ -1082,16 +1082,20 @@ main {
         -webkit-transform: rotate(-30deg) scale(1);
         transform: rotate(-30deg) scale(1);
     }
+
     50% {
         -webkit-transform: rotate(360deg) scale(4);
         transform: rotate(360deg) scale(4);
         background-color: white;
     }
+
     80% {
         -webkit-transform: rotate(720deg) scale(0.8);
         transform: rotate(720deg) scale(0.8);
     }
-    90%, 100% {
+
+    90%,
+    100% {
         -webkit-transform: rotate(720deg) scale(1);
         transform: rotate(720deg) scale(1);
         background-color: #ffc107;
@@ -1103,23 +1107,28 @@ main {
         -webkit-transform: rotate(-30deg) scale(1);
         transform: rotate(-30deg) scale(1);
     }
+
     50% {
         -webkit-transform: rotate(360deg) scale(4);
         transform: rotate(360deg) scale(4);
         background-color: white;
     }
+
     80% {
         -webkit-transform: rotate(720deg) scale(0.8);
         transform: rotate(720deg) scale(0.8);
     }
-    90%, 100% {
+
+    90%,
+    100% {
         -webkit-transform: rotate(720deg) scale(1);
         transform: rotate(720deg) scale(1);
         background-color: #ffc107;
     }
 }
 
-.loading:before, .loading:after {
+.loading:before,
+.loading:after {
     content: "";
     position: absolute;
     width: 100%;
@@ -1142,7 +1151,9 @@ main {
         transform: translate(-200%, -100%) scale(0.2) rotate(-180deg);
         background-color: white;
     }
-    70%, 100% {
+
+    70%,
+    100% {
         -webkit-transform: translate(0, 0) scale(1) rotate(-360deg);
         transform: translate(0, 0) scale(1) rotate(-360deg);
         background-color: #00838f;
@@ -1155,7 +1166,9 @@ main {
         transform: translate(-200%, -100%) scale(0.2) rotate(-180deg);
         background-color: white;
     }
-    70%, 100% {
+
+    70%,
+    100% {
         -webkit-transform: translate(0, 0) scale(1) rotate(-360deg);
         transform: translate(0, 0) scale(1) rotate(-360deg);
         background-color: #00838f;
@@ -1176,7 +1189,9 @@ div:after {
         transform: translate(200%, 100%) scale(0.2) rotate(180deg);
         background-color: white;
     }
-    70%, 100% {
+
+    70%,
+    100% {
         -webkit-transform: translate(0, 0) scale(1) rotate(360deg);
         transform: translate(0, 0) scale(1) rotate(360deg);
         background-color: #ffc107;
@@ -1189,9 +1204,30 @@ div:after {
         transform: translate(200%, 100%) scale(0.2) rotate(180deg);
         background-color: white;
     }
-    70%, 100% {
+
+    70%,
+    100% {
         -webkit-transform: translate(0, 0) scale(1) rotate(360deg);
         transform: translate(0, 0) scale(1) rotate(360deg);
         background-color: #00838f;
     }
+}
+
+.pagination, .pagination_content {
+    display: flex;
+    justify-content: center;
+}
+
+.pagination li {
+    padding: 0 5px;
+    margin: 10px 5px;
+}
+
+.pagination li a{
+    padding: 0 5px;
+}
+
+.pagination li .active {
+    font-weight: bold;
+    color: blueviolet
 }
