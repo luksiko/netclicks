@@ -19,6 +19,8 @@ const
    searchForm = document.querySelector('.search__form'),
    searchFormInput = document.querySelector('.search__form-input'),
    pagination = document.querySelector('.pagination'),
+   trailer = document.getElementById('trailer'),
+   headTreiler = document.getElementById('headTreiler'),
    preloader = document.querySelector('.preloader');
 
 // preloader
@@ -53,7 +55,11 @@ class DBService {
 
    getNextPage = page => {
       return this.getData(this.temp + '&page=' + page);
-   }
+   };
+
+   getVideo = id => {
+      return this.getData(`${SERVER}/tv/${id}/videos?api_key=${API_KEY}&language=ru-RU`);
+   };
 }
 
 const dbService = new DBService();
@@ -247,7 +253,8 @@ tvShowsList.addEventListener('click', e => {
             genres,
             vote_average: voteAverage,
             overview,
-            homepage
+            homepage,
+            id
          }) => {
             if (posterPath) {
                tvCardImg.src = IMG_URL + posterPath;
@@ -255,7 +262,6 @@ tvShowsList.addEventListener('click', e => {
             } else {
                tvCardImg.src = tvImgContent.classList.add('hide');
                modalContent.style.padding = '35px';
-
             }
             tvCardImg.alt = title;
             modalTitle.textContent = title;
@@ -271,6 +277,34 @@ tvShowsList.addEventListener('click', e => {
             description.textContent = overview;
             rating.textContent = voteAverage;
             modalLink.href = homepage;
+            console.log(id);
+
+            return card.id; 
+         })
+         .then(dbService.getVideo)
+         .then(card => {
+            headTreiler.classList.add('hide');
+            trailer.textContent = '';
+            if (card.results.length) {
+               
+               headTreiler.classList.remove('hide')
+               card.results.forEach(item => {
+                  const trailerItem = document.createElement('li');
+   
+                  trailerItem.innerHTML = `
+                     <iframe
+                        width="300"
+                        height="200"
+                        src="https://www.youtube.com/embed/${item.key}"
+                        frameborder="0"
+                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen>
+                     </iframe>
+                     <h4>${item.name}</h4>
+                  `;
+                  trailer.append(trailerItem); 
+               })
+            }
          })
          .then(() => {
             document.body.style.overflow = 'hidden'
